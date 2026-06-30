@@ -1,0 +1,182 @@
+/*
+ * Design tokens — Tailwind v4 @theme block.
+ * Dark ("Linear/Vercel" modern) is the default theme.
+ * Light override via :root[data-theme="light"] (App.tsx sets data-theme).
+ *
+ * Token → utility mapping:
+ *   --color-bg-base        → bg-bg-base
+ *   --color-text-primary   → text-text-primary
+ *   --color-accent         → bg-accent, text-accent, border-accent
+ *   --radius-sm/md         → rounded-sm, rounded-md
+ *   --font-sans/mono       → font-sans, font-mono
+ *
+ * (tailwindcss is imported in ./tailwind.css — do not re-import here.)
+ */
+@theme {
+  /* ── Surfaces (Modern dark — "Linear/Vercel") ── */
+  --color-bg-base:      #000000;
+  --color-bg-surface:   #0E0E0E;
+  --color-bg-elevated:  #1A1A1A;
+  --color-bg-inset:     #050505;
+  --color-bg-hover:     #1A1A1A;
+  --color-bg-overlay:   #202024; /* floating surfaces (menus, modals, popovers) — reads clearly on near-black */
+
+  /* ── Borders (translucent so they read on any surface step) ── */
+  --color-border-hairline: rgba(255, 255, 255, 0.08);
+  --color-border-strong:   rgba(255, 255, 255, 0.15);
+  --color-border-focus:    #5E6AD2;
+
+  /* ── Text ── */
+  --color-text-primary:   #EDEDED;
+  --color-text-secondary: #A1A1AA;
+  --color-text-tertiary:  #52525B;
+  --color-text-disabled:  #3F3F46;
+
+  /* ── Accent (indigo — primary action / focus / selection / links ONLY) ── */
+  --color-accent:        #5E6AD2;
+  --color-accent-hover:  #737EE0;
+  --color-accent-fg:     #FFFFFF;
+  --color-accent-subtle: rgba(94, 106, 210, 0.14);
+  --color-ring:          #5E6AD2;
+  --color-info:          #737EE0;
+  --color-link:          #737EE0;
+  --color-selection:     rgba(94, 106, 210, 0.30);
+
+  /* ── Semantic / trust (local-safe = green, cloud-caution = amber, danger = red) ── */
+  --color-local-safe:      #10B981;
+  --color-local-safe-dim:  rgba(16, 185, 129, 0.15);
+  --color-cloud-caution:   #F59E0B;
+  --color-cloud-caution-dim: rgba(245, 158, 11, 0.15);
+  --color-warning:         #F59E0B;
+  --color-danger:          #EF4444;
+  --color-danger-dim:      rgba(239, 68, 68, 0.15);
+  --color-success:         #10B981;
+
+  /* ── Typography ── */
+  --font-sans: "Inter", "Geist", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif;
+  --font-mono: "JetBrains Mono", "Geist Mono", "Cascadia Code", "SF Mono", Consolas, "Liberation Mono", monospace;
+
+  /* ── Radius (softer, modern) ── */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* ── Motion (functional only — no decorative animation) ── */
+  --duration-fast:   100ms;
+  --duration-normal: 160ms;
+  --duration-slow:   220ms;
+
+  /* ── Elevation — soft shadow for floating overlays only ── */
+  --shadow-overlay:  0 8px 32px rgba(0, 0, 0, 0.60), 0 2px 8px rgba(0, 0, 0, 0.40);
+  --shadow-menu:     0 4px 16px rgba(0, 0, 0, 0.50);
+  --shadow-panel:    0 1px 2px rgba(0, 0, 0, 0.40);
+}
+
+/* ── Light theme — applied when <html data-theme="light"> ── */
+:root[data-theme="light"] {
+  --color-bg-base:      #F7F7F8;
+  --color-bg-surface:   #FFFFFF;
+  --color-bg-elevated:  #F4F4F5;
+  --color-bg-inset:     #FAFAFA;
+  --color-bg-hover:     #F4F4F5;
+  --color-bg-overlay:   #FFFFFF;
+  color-scheme: light;
+
+  --color-border-hairline: rgba(0, 0, 0, 0.07);
+  --color-border-strong:   rgba(0, 0, 0, 0.13);
+  --color-border-focus:    #5E6AD2;
+
+  --color-text-primary:   #18181B;
+  --color-text-secondary: #52525B;
+  --color-text-tertiary:  #A1A1AA;
+  --color-text-disabled:  #C0C0C0;
+
+  --color-accent:        #5E6AD2;
+  --color-accent-hover:  #4B55C3;
+  --color-accent-fg:     #FFFFFF;
+  --color-accent-subtle: rgba(94, 106, 210, 0.10);
+  --color-ring:          #5E6AD2;
+  --color-info:          #5E6AD2;
+  --color-link:          #5E6AD2;
+  --color-selection:     rgba(94, 106, 210, 0.20);
+
+  --color-local-safe:      #059669;
+  --color-local-safe-dim:  rgba(5, 150, 105, 0.12);
+  --color-cloud-caution:   #D97706;
+  --color-cloud-caution-dim: rgba(217, 119, 6, 0.12);
+  --color-warning:         #D97706;
+  --color-danger:          #DC2626;
+  --color-danger-dim:      rgba(220, 38, 38, 0.12);
+  --color-success:         #059669;
+
+  --shadow-overlay:  0 8px 32px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-menu:     0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-panel:    0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Motion — honor prefers-reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Reset ── */
+
+/* ── Base ── */
+html, body, #root {
+  height: 100%;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Native controls (select option lists, scrollbars) follow the app theme.
+   Dark by default; the light override flips it. */
+:root { color-scheme: dark; }
+
+/* ── Focus ring — accent-colored, keyboard-only ── */
+:focus-visible {
+  outline: 1px solid var(--color-ring);
+  outline-offset: 1px;
+  border-radius: 2px;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-tertiary); }
+
+/* ── Utilities ── */
+.mono { font-family: var(--font-mono); }
+
+/* ── Animations — sanctioned moments only ── */
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+.msg-in { animation: msg-in var(--duration-normal) ease-out; }
+
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.97) translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+.modal-in { animation: modal-in var(--duration-normal) ease-out; }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fade-in { animation: fade-in var(--duration-fast) ease-out; }
+
+/* ── Drag region (Wails) ── */
+.drag-region { -webkit-app-region: drag; }
+.no-drag     { -webkit-app-region: no-drag; }

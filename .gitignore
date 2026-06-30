@@ -1,0 +1,39 @@
+# Build output
+build/bin/
+frontend/dist/
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build artifacts
+frontend/package.json.md5
+
+# Databases (user data / dev artifacts — never commit)
+*.db
+ruvector.db
+
+# Vault / credentials (NEVER commit)
+*.enc
+*.key
+
+# Wails dev symlink
+frontend/wailsjs
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Claude / agent session data
+.claude/
+.agent/
+
+# Go
+*.test
+*.out
