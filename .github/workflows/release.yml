@@ -84,9 +84,42 @@ jobs:
           name: ferry-linux-amd64
           path: build/bin/ferry
 
+  build-macos:
+    name: Build macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Build (universal binary)
+        run: wails build -platform darwin/universal
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ferry-macos-universal
+          path: build/bin/ferry.app
+
   release:
     name: Create Release
-    needs: [build-windows, build-linux]
+    needs: [build-windows, build-linux, build-macos]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -100,6 +133,7 @@ jobs:
           mv dist/ferry-windows-amd64/ferry.exe dist/ferry-windows-amd64.exe
           mv dist/ferry-linux-amd64/ferry dist/ferry-linux-amd64
           chmod +x dist/ferry-linux-amd64
+          cd dist/ferry-macos-universal && zip -r ../ferry-macos-universal.zip ferry.app && cd -
 
       - name: Create release
         uses: softprops/action-gh-release@v2
@@ -107,4 +141,5 @@ jobs:
           files: |
             dist/ferry-windows-amd64.exe
             dist/ferry-linux-amd64
+            dist/ferry-macos-universal.zip
           generate_release_notes: true
